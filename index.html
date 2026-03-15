@@ -28,7 +28,6 @@
             border: 1px solid #e2e8f0;
             transition: transform 0.2s;
         }
-        .uni-logo:hover { transform: scale(1.1); }
         
         .table-card {
             background: #fff;
@@ -63,13 +62,19 @@
             border: none;
             transition: transform 0.2s;
         }
-        .stat-card:hover { transform: translateY(-5px); }
 
-        /* Mobil için ufak hizalama dokunuşları */
+        /* Mobilde uzun bölüm isimlerinin alt satıra geçmesine izin veriyoruz */
+        table.dataTable.dtr-inline.collapsed>tbody>tr>td.dtr-control, table.dataTable.dtr-inline.collapsed>tbody>tr>th.dtr-control {
+            white-space: normal !important;
+        }
+        .table td { white-space: normal !important; }
+
         @media (max-width: 768px) {
             .stat-card h2 { font-size: 1.5rem; }
             .stat-card i { font-size: 2rem; }
             .table-card { padding: 1rem !important; }
+            /* Mobilde logo sütununu biraz daha daraltıp metne yer açalım */
+            .uni-logo { max-width: 40px; max-height: 40px; }
         }
     </style>
 </head>
@@ -163,12 +168,12 @@
                 </div>
                 
                 <div class="w-100">
-                    <table id="veriTablosu" class="table table-hover align-middle dt-responsive nowrap" style="width:100%">
+                    <table id="veriTablosu" class="table table-hover align-middle dt-responsive" style="width:100%">
                         <thead>
                             <tr>
-                                <th data-priority="1">Logo</th>
+                                <th data-priority="3">Logo</th>
                                 <th data-priority="2">Üniversite</th>
-                                <th data-priority="3">Program Adı</th>
+                                <th data-priority="1">Program Adı</th>
                                 <th>Derece</th>
                                 <th>Süre</th>
                                 <th>Şehir</th>
@@ -178,7 +183,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            </tbody>
+                        </tbody>
                     </table>
                 </div>
             </div>
@@ -205,7 +210,7 @@
 
                     var table = $('#veriTablosu').DataTable({
                         data: veri,
-                        responsive: true, // Mobil uyumluluğu aktif eden komut
+                        responsive: true,
                         columns: [
                             { 
                                 data: 'Image1',
