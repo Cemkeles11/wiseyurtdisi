@@ -24,9 +24,8 @@
             object-fit: contain;
             border-radius: 6px;
             background: #fff;
-            padding: 3px;
+            padding: 2px;
             border: 1px solid #e2e8f0;
-            transition: transform 0.2s;
         }
         
         .table-card {
@@ -41,13 +40,11 @@
             color: #475569;
             font-weight: 600;
             text-transform: uppercase;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             letter-spacing: 0.5px;
             border-bottom: 2px solid #e2e8f0;
         }
-        .table tbody tr { transition: all 0.2s ease; }
-        .table tbody tr:hover { background-color: #f1f5f9; transform: translateY(-1px); }
-        
+
         .dataTables_filter { display: none; }
         
         #loader {
@@ -60,21 +57,29 @@
         .stat-card {
             border-radius: 10px;
             border: none;
-            transition: transform 0.2s;
         }
 
-        /* Mobilde uzun bölüm isimlerinin alt satıra geçmesine izin veriyoruz */
-        table.dataTable.dtr-inline.collapsed>tbody>tr>td.dtr-control, table.dataTable.dtr-inline.collapsed>tbody>tr>th.dtr-control {
-            white-space: normal !important;
+        /* 1. Dokunuş: Mobilde uzun metinlerin alt satıra geçmesine izin ver ve hücre boşluklarını azalt */
+        .table td { 
+            white-space: normal !important; 
+            padding: 8px 4px !important; /* Hücre boşluklarını azalttık (compact etkisi) */
         }
-        .table td { white-space: normal !important; }
 
         @media (max-width: 768px) {
-            .stat-card h2 { font-size: 1.5rem; }
-            .stat-card i { font-size: 2rem; }
-            .table-card { padding: 1rem !important; }
-            /* Mobilde logo sütununu biraz daha daraltıp metne yer açalım */
-            .uni-logo { max-width: 40px; max-height: 40px; }
+            .stat-card h2 { font-size: 1.4rem; }
+            .stat-card i { font-size: 1.8rem; }
+            .table-card { padding: 0.75rem !important; }
+            
+            /* 2. Dokunuş: Mobilde metin boyutunu küçülterek 3 sütunun sığmasını sağla */
+            .table td, .table th { font-size: 0.8rem !important; }
+            
+            /* Mobilde logo sütununu daralt */
+            .uni-logo { max-width: 35px; max-height: 35px; }
+            
+            /* Responsive "+" ikonunu hücrenin soluna al ve metinden ayır */
+            table.dataTable.dtr-inline.collapsed>tbody>tr>td.dtr-control {
+                padding-left: 30px !important;
+            }
         }
     </style>
 </head>
@@ -94,14 +99,14 @@
             </div>
         </nav>
 
-        <div class="container-fluid px-2 px-md-4 mb-5">
-            <div class="row mb-4 g-2">
+        <div class="container-fluid px-1 px-md-4 mb-5">
+            <div class="row mb-3 g-2">
                 <div class="col-6 col-md-6">
                     <div class="card stat-card bg-primary text-white shadow-sm h-100">
-                        <div class="card-body d-flex flex-column flex-md-row align-items-center text-center text-md-start">
-                            <i class="fa-solid fa-database fa-2x fa-md-3x opacity-50 mb-2 mb-md-0 me-md-4"></i>
+                        <div class="card-body d-flex flex-column flex-md-row align-items-center text-center text-md-start p-2 p-md-3">
+                            <i class="fa-solid fa-database fa-lg fa-md-3x opacity-50 mb-1 mb-md-0 me-md-4"></i>
                             <div>
-                                <h6 class="card-title text-uppercase mb-1 opacity-75" style="font-size: 0.75rem;">Toplam Program</h6>
+                                <h6 class="card-title text-uppercase mb-1 opacity-75" style="font-size: 0.7rem;">Toplam Program</h6>
                                 <h2 id="stat-total" class="m-0 fw-bold">0</h2>
                             </div>
                         </div>
@@ -109,10 +114,10 @@
                 </div>
                 <div class="col-6 col-md-6">
                     <div class="card stat-card bg-success text-white shadow-sm h-100">
-                        <div class="card-body d-flex flex-column flex-md-row align-items-center text-center text-md-start">
-                            <i class="fa-solid fa-list-check fa-2x fa-md-3x opacity-50 mb-2 mb-md-0 me-md-4"></i>
+                        <div class="card-body d-flex flex-column flex-md-row align-items-center text-center text-md-start p-2 p-md-3">
+                            <i class="fa-solid fa-list-check fa-lg fa-md-3x opacity-50 mb-1 mb-md-0 me-md-4"></i>
                             <div>
-                                <h6 class="card-title text-uppercase mb-1 opacity-75" style="font-size: 0.75rem;">Filtrelenen</h6>
+                                <h6 class="card-title text-uppercase mb-1 opacity-75" style="font-size: 0.7rem;">Filtrelenen</h6>
                                 <h2 id="stat-filtered" class="m-0 fw-bold">0</h2>
                             </div>
                         </div>
@@ -120,55 +125,48 @@
                 </div>
             </div>
 
-            <div class="card table-card p-4">
-                <h4 class="text-primary fw-bold mb-3 fs-5"><i class="fa-solid fa-magnifying-glass me-2"></i>Almanya Program Arama Motoru</h4>
+            <div class="card table-card p-3 p-md-4">
+                <h4 class="text-primary fw-bold mb-3 fs-6"><i class="fa-solid fa-magnifying-glass me-2"></i>Almanya Program Arama Motoru</h4>
                 
-                <div class="bg-light p-3 rounded border mb-4">
+                <div class="bg-light p-2 p-md-3 rounded border mb-3">
                     <div class="row g-2 mb-2">
                         <div class="col-12 col-md-3">
-                            <label class="form-label fw-bold text-secondary" style="font-size: 0.75rem;">GENEL ARAMA</label>
                             <div class="input-group input-group-sm">
                                 <span class="input-group-text bg-white border-primary"><i class="fa-solid fa-search text-primary"></i></span>
-                                <input type="text" id="custom-search" class="form-control border-primary" placeholder="Bölüm, Üniversite vb.">
+                                <input type="text" id="custom-search" class="form-control border-primary" placeholder="Bölüm, Üniversite vb. Ara">
                             </div>
                         </div>
                         <div class="col-6 col-md-3">
-                            <label class="form-label fw-bold text-secondary" style="font-size: 0.75rem;">EĞİTİM DERECESİ</label>
-                            <select id="filter-derece" class="form-select form-select-sm border-info"><option value="">Tümü</option></select>
+                            <select id="filter-derece" class="form-select form-select-sm border-info"><option value="">Eğitim Derecesi</option></select>
                         </div>
                         <div class="col-6 col-md-3">
-                            <label class="form-label fw-bold text-secondary" style="font-size: 0.75rem;">EĞİTİM DİLİ</label>
-                            <select id="filter-dil" class="form-select form-select-sm border-info"><option value="">Tümü</option></select>
+                            <select id="filter-dil" class="form-select form-select-sm border-info"><option value="">Eğitim Dili</option></select>
                         </div>
                         <div class="col-12 col-md-3">
-                            <label class="form-label fw-bold text-secondary" style="font-size: 0.75rem;">ŞEHİR</label>
-                            <select id="filter-sehir" class="form-select form-select-sm border-info"><option value="">Tümü</option></select>
+                            <select id="filter-sehir" class="form-select form-select-sm border-info"><option value="">Şehir Seç</option></select>
                         </div>
                     </div>
                     
                     <div class="row g-2 align-items-end">
                         <div class="col-4 col-md-3">
-                            <label class="form-label fw-bold text-secondary" style="font-size: 0.75rem;">NC FREI</label>
-                            <select id="filter-ncfrei" class="form-select form-select-sm border-warning"><option value="">Tümü</option></select>
+                            <select id="filter-ncfrei" class="form-select form-select-sm border-warning"><option value="">NC Frei?</option></select>
                         </div>
                         <div class="col-4 col-md-3">
-                            <label class="form-label fw-bold text-secondary" style="font-size: 0.75rem;">ŞARTLI KABUL</label>
-                            <select id="filter-sartli" class="form-select form-select-sm border-warning"><option value="">Tümü</option></select>
+                            <select id="filter-sartli" class="form-select form-select-sm border-warning"><option value="">Şartlı Kabul?</option></select>
                         </div>
                         <div class="col-4 col-md-3">
-                            <label class="form-label fw-bold text-secondary" style="font-size: 0.75rem;">SEVİYE</label>
-                            <select id="filter-seviye" class="form-select form-select-sm border-warning"><option value="">Tümü</option></select>
+                            <select id="filter-seviye" class="form-select form-select-sm border-warning"><option value="">Dil Seviyesi</option></select>
                         </div>
-                        <div class="col-12 col-md-3 mt-3 mt-md-0">
-                            <button id="btn-clear" class="btn btn-outline-danger btn-sm w-100 fw-bold">
-                                <i class="fa-solid fa-trash-can me-1"></i> Temizle
+                        <div class="col-12 col-md-3 mt-2 mt-md-0">
+                            <button id="btn-clear" class="btn btn-outline-danger btn-sm w-100 fw-bold py-1">
+                                <i class="fa-solid fa-trash-can me-1"></i> Filtreleri Temizle
                             </button>
                         </div>
                     </div>
                 </div>
                 
                 <div class="w-100">
-                    <table id="veriTablosu" class="table table-hover align-middle dt-responsive" style="width:100%">
+                    <table id="veriTablosu" class="table table-sm table-hover table-striped align-middle dt-responsive compact" style="width:100%">
                         <thead>
                             <tr>
                                 <th data-priority="3">Logo</th>
@@ -210,20 +208,26 @@
 
                     var table = $('#veriTablosu').DataTable({
                         data: veri,
-                        responsive: true,
+                        responsive: {
+                            details: {
+                                type: 'column', // "+" ikonu için ayrı bir sütun oluşturma, mevcut hücreye ekle (dtr-control)
+                                target: 2       // "+" ikonunu 'Program Adı' hücresine koy
+                            }
+                        },
                         columns: [
                             { 
                                 data: 'Image1',
                                 render: function(data, type) {
                                     if(type === 'display') {
-                                        return data ? `<img src="${data}" alt="Logo" class="uni-logo shadow-sm">` : '<span class="badge bg-light text-dark border"><i class="fa-solid fa-image"></i></span>';
+                                        return data ? `<img src="${data}" alt="Logo" class="uni-logo shadow-sm">` : '<span class="badge bg-light text-dark border p-1" style="font-size:0.6rem;">LOGO</span>';
                                     }
                                     return data;
                                 },
-                                orderable: false
+                                orderable: false,
+                                className: 'text-center'
                             },
                             { data: 'Content2', className: 'fw-bold text-dark' },
-                            { data: 'Conten1', className: 'text-primary fw-semibold' },
+                            { data: 'Conten1', className: 'text-primary fw-semibold dtr-control' }, // 2: "+" ikonu buraya gelecek
                             { data: 'itemsgrid_item1' }, // 3: Derece
                             { data: 'itemsgrid_ite2' },  // 4: Süre
                             { data: 'itemsgrid_ite3' },  // 5: Şehir
@@ -232,23 +236,27 @@
                                 data: 'NC Frei mı?',      // 7: NC Frei
                                 render: function(data, type) {
                                     if (type === 'display') {
-                                        return data === 'Evet' ? '<span class="badge bg-success bg-opacity-75"><i class="fa-solid fa-check"></i> Evet</span>' : `<span class="badge bg-danger bg-opacity-75">${data || '-'}</span>`;
+                                        if (data === 'Evet') return '<span class="badge bg-success bg-opacity-75 p-1" style="font-size:0.6rem;"><i class="fa-solid fa-check"></i> Evet</span>';
+                                        if (data === 'Hayır') return '<span class="badge bg-danger bg-opacity-75 p-1" style="font-size:0.6rem;"><i class="fa-solid fa-xmark"></i> Hayır</span>';
+                                        return `<span class="badge bg-secondary bg-opacity-75 p-1" style="font-size:0.6rem;">${data || '-'}</span>`;
                                     }
                                     return data || '';
-                                }
+                                },
+                                className: 'text-center'
                             },
                             { 
                                 data: 'Şartlı kabul var mı?', // 8: Şartlı Kabul
                                 render: function(data, type, row) {
                                     if (type === 'display') {
-                                        let html = data === 'Var' ? '<span class="badge bg-success">Var</span>' : `<span class="badge bg-secondary">${data || 'Yok'}</span>`;
+                                        let html = data === 'Var' ? '<span class="badge bg-success p-1" style="font-size:0.6rem;">Var</span>' : `<span class="badge bg-secondary p-1" style="font-size:0.6rem;">${data || 'Yok'}</span>`;
                                         if (data === 'Var' && row['Hangi Almanca seviyesine şartlı kabul veriyor ?'] && row['Hangi Almanca seviyesine şartlı kabul veriyor ?'] !== '0') {
-                                            html += ` <small class="text-muted fw-bold" style="font-size: 0.75rem;">(${row['Hangi Almanca seviyesine şartlı kabul veriyor ?']})</small>`;
+                                            html += ` <small class="text-muted fw-bold" style="font-size: 0.6rem;">(${row['Hangi Almanca seviyesine şartlı kabul veriyor ?']})</small>`;
                                         }
                                         return html;
                                     }
                                     return data || '';
-                                }
+                                },
+                                className: 'text-center'
                             },
                             { 
                                 data: 'Hangi Almanca seviyesine şartlı kabul veriyor ?', // 9: Gizli
@@ -288,7 +296,13 @@
                     $('#filter-seviye').on('change', function() { let val = $.fn.dataTable.util.escapeRegex($(this).val()); table.column(9).search(val ? '^'+val+'$' : '', true, false).draw(); });
 
                     $('#btn-clear').on('click', function() {
-                        $('#custom-search, #filter-derece, #filter-dil, #filter-sehir, #filter-ncfrei, #filter-sartli, #filter-seviye').val('');
+                        $('#custom-search').val('');
+                        $('#filter-derece').val(''); // Varsayılan metne geri dön
+                        $('#filter-dil').val('');
+                        $('#filter-sehir').val('');
+                        $('#filter-ncfrei').val('');
+                        $('#filter-sartli').val('');
+                        $('#filter-seviye').val('');
                         table.search('').columns().search('').draw();
                     });
 
